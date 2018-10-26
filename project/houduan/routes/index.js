@@ -20,11 +20,4 @@ router.get("/goodslist",(req,res)=>{
     })
 });
 
-
-// 依据商品编号查询出商品信息
-router.get("/find",(req,res)=>{
-    var obj={id:"9",title:"小辣椒 7",p_old:2199.00,p_now:2099.00,p_sn:"2199282",p_type:"青春款"}
-    res.send(obj);
-});
-
 module.exports=router;

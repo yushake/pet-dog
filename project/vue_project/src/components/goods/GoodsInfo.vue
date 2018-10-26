@@ -6,25 +6,21 @@
             <div class="left">
                 <img src="http://127.0.0.1:3000/img/products/md/1.1.1-md.jpg">
                 <ul>
-                    <li><img src="http://127.0.0.1:3000/img/products/sm/1.1.1-sm.jpg"></li>
-                    <li><img src="http://127.0.0.1:3000/img/products/sm/1.1.1-sm.jpg"></li>
-                    <li><img src="http://127.0.0.1:3000/img/products/sm/1.1.1-sm.jpg"></li>
-                    <li><img src="http://127.0.0.1:3000/img/products/sm/1.1.1-sm.jpg"></li>
-                    <li><img src="http://127.0.0.1:3000/img/products/sm/1.1.1-sm.jpg"></li>
-                    <li><img src="http://127.0.0.1:3000/img/products/sm/1.1.1-sm.jpg"></li>
+                    <li v-for="item in imagelist" :key="item.cid"><img :src="item.sm" data-md="item.md" data-lg="item.lg"></li>
+                    
                 </ul>
             </div>
             <div class="right">
-                <div class="title">小狗狗衣服幼犬奶狗猫咪宠物服饰春秋款彩虹牛仔衣泰迪比熊博美衣</div>
+                <div class="title">{{details.details}}</div>
                 <div>
                     <div class="detail">
                         <div class="price">
-                            <p class="oldprice">¥45.00</p>
-                            <p class="newprice">¥24.50</p>
+                            <p class="oldprice">¥{{details.old_price}}</p>
+                            <p class="newprice">¥{{details.now_price}}</p>
                         </div>
                         <div class="data">
                             <p class="comment">117<br>累计评论</p>
-                            <p class="sallcount">1425<br>交易成功</p>
+                            <p class="sallcount">{{details.sold_count}}<br>交易成功</p>
                         </div>
                     </div>
                     <div class="coupon">
@@ -48,14 +44,14 @@
                     <span>72小时发货</span>
                 </div>
                 <div class="spec">
-                    <p>s码</p><p>m码</p><p>l码</p>
+                    <p v-for="item in spec" :key="item.index">{{item}}</p>
                 </div>
                 <div class="count">
                     <p>数量</p>
                     <div>
-                        <button>-</button>
-                        <input type="text" value=1>
-                        <button>+</button>
+                        <button @click="goSub">-</button>
+                        <input type="number" v-model="num">
+                        <button @click="goAdd">+</button>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;件(库存234件)</p>
                     </div>
                 </div>
@@ -79,10 +75,16 @@
             return{
                 lid:this.$route.params.lid,
                 details:{},
-                imagelist:[]
+                spec:[],
+                imagelist:[],
+                num:1
             }
         },
         methods:{
+            // addCart(){
+            //     //修改vuex中共享数据,参数方法名称
+            //     this.$store.commit("increment",this.num);
+            // },
             goSub(){
                 if(this.num<=1){
                     return;
@@ -98,8 +100,12 @@
                 // 发送请求获取数据
                 this.$http.get("product/details?lid="+this.lid).then(result=>{
                     // 保存在info数据对象中
-                    this.details=result.body;
+                    // console.log(result);
+                    this.details=result.body[0];
+                    var specs=result.body[0].spec.split(",");
+                    this.spec=specs;
                     // console.log(this.details);
+                    // console.log(this.spec);
                 })
             },
             getImageList(){
@@ -160,16 +166,19 @@
     padding:0;
 }
 .container .left>ul>li{
-    width:25%;
-    padding:20px 20px 0 0;
+    /* width:25%; */
+    padding:15px 20px 0 0;
     
+}
+.container .left>ul>li>img{
+    width:75px;
 }
 .container .right .title{
     font-size: 16px;
     font-weight:bold;
 }
 .right .detail{
-    padding:20px;
+    padding:10px 20px;
     background: #FFF2E8;
 }
 .right .detail,.right .detail .data{
@@ -218,7 +227,7 @@
     margin-right:15px;
 }
 .right .delivery{
-    margin-top:10px;
+    /* margin-top:10px; */
     font-size:16px;
     color:rgb(148, 144, 144);
 }

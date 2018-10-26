@@ -76,7 +76,7 @@ router.get("/goodspic",(req,res)=>{
     var sql="SELECT `cid`, `product_id`, `sm`, `md`, `lg` FROM `product_pic` WHERE product_id=?";
     pool.query(sql,[product_id],(err,result)=>{
         if(err) throw err;
-        console.log(result);
+        // console.log(result);
         res.send(result);
     })
 });

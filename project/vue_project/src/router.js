@@ -7,6 +7,7 @@ import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import GoodsList from "./components/goods/GoodsList";
 import GoodsInfo from "./components/goods/GoodsInfo";
+import Cart from "./components/cart/Cart";
 
 
 Vue.use(Router)
@@ -21,5 +22,6 @@ export default new Router({
     {path:"/goodslist",component:GoodsList},
     // {path:"/goodslist/:iid",component:GoodsList,name:"goodslist"},
     {path:"/goodsinfo/:lid",component:GoodsInfo,name:"goodsinfo"},
+    {path:"/cart",component:Cart}
   ]
 })

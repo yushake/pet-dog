@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="content_body">
-                    <div class="content_child" v-for="item in goodslist.slice(0,6)" :key="item.lid">
+                    <div class="content_child" v-for="item in goodslist.slice(0,6)" :key="item.lid" @click="getDetails(item.lid)">
                         <a><img :src="item.pic"></a>
                         <p class="details">{{item.details}}</p>
                         <div class="content_text">
@@ -188,6 +188,9 @@
             }
         },
         methods:{
+            getDetails(lid){
+                this.$router.push({path:"/goodsinfo/"+lid});
+            },
             getImageList(){
                 // 获取图片轮播数据
                 var url="index/imagelist";

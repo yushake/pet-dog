@@ -4,13 +4,13 @@
             <img src="../../img/talk.jpg">
         </div>
         <hr>
-        <div class="cart">
+        <router-link to="/cart" class="cart">
             <p class="mui-icon mui-icon-extra mui-icon-extra-cart"></p>
             <p class="mui-tab-label">购物车</p>
             <p class="cart_count">
                 <span class="mui-badge">9</span>
             </p>
-        </div>
+        </router-link>
         <hr>
         <div class="mui-mbar-tab-logo mui-mbar-tab-logo-asset"></div>
     </div>
