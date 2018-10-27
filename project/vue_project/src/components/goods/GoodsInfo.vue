@@ -44,7 +44,7 @@
                     <span>72小时发货</span>
                 </div>
                 <div class="spec">
-                    <p v-for="item in spec" :key="item.index">{{item}}</p>
+                    <a v-for="(item,index) in spec" :key="item.index" :class="{'checked': index == active}" @click="check_show(index)">{{item}}</a>
                 </div>
                 <div class="count">
                     <p>数量</p>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="btn">
                     <button class="sall">立即购买</button>
-                    <button class="joincart">加入购物车</button>
+                    <button class="joincart" @click="postCart">加入购物车</button>
                 </div>
             </div>
         </div>
@@ -77,7 +77,8 @@
                 details:{},
                 spec:[],
                 imagelist:[],
-                num:1
+                num:1,
+                active:0
             }
         },
         methods:{
@@ -100,12 +101,9 @@
                 // 发送请求获取数据
                 this.$http.get("product/details?lid="+this.lid).then(result=>{
                     // 保存在info数据对象中
-                    // console.log(result);
                     this.details=result.body[0];
                     var specs=result.body[0].spec.split(",");
                     this.spec=specs;
-                    // console.log(this.details);
-                    // console.log(this.spec);
                 })
             },
             getImageList(){
@@ -114,7 +112,32 @@
                     this.imagelist=result.body;
                     console.log(this.imagelist)
                 })
-            }
+            },
+            check_show: function(index) {
+                this.active = index;
+            },
+            postCart(){
+                var product_id=this.lid;
+                var detail=this.details.details;
+                var spec=this.spec[this.active];
+                var count=this.num; 
+                var price=this.details.now_price;
+                var img_url=this.imagelist[0].sm; 
+                var url="cart/add";
+                var obj={
+                    product_id:product_id,
+                    detail:detail,
+                    spec:spec,
+                    count:count,
+                    price:price,
+                    img_url:img_url    
+                };
+                console.log(obj)
+                this.$http.post(url,obj).then(result=>{
+                    console.log(result);
+                    Toast("添加成功")
+                })
+            },
         },
         created(){
             this.getImageList();
@@ -144,14 +167,14 @@
     display: flex;
 }
 .container .left{
-    width:50%;
+    width:45%;
     padding-right:50px;
 }
 .container .left>img{
     width:100%;
 }
 .container .right{
-    width:50%;
+    width:55%;
 }
 .container .left,.container .right{
     display: flex;
@@ -235,19 +258,28 @@
     display: flex;
     margin-top:20px;
 }
-.right .spec>p{
+.right .spec>a{
     margin-right:20px;
     padding:5px 15px;
+    font-size:14px;
+    color:#aaa;
     border:1px solid #bbb;
+}
+.right .spec>a.checked{
+    border:1px solid rgb(14, 212, 212);
+    color:rgb(14, 212, 212);
 }
 .right .count{
     display: flex;
+    width:100%;
 }
 .right .count>p{
+    display: flex;
     line-height: 30px;
     margin-right:50px;
     font-size:16px;
 }
+
 .right .count>div>p{
     display: inline;
 }

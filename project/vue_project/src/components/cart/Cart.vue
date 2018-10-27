@@ -12,70 +12,25 @@
                 <div class="do">操作</div>
             </div>
             <ul class="content">
-                <li class="goods">
+                <li class="goods" v-for="item in list" :key="item.cid">
                     <div class="check"><input type="checkbox"></div>
                     <div class="info">
-                        <img src="http://127.0.0.1:3000/img/products/sm/1.1.1-sm.jpg" alt="">
-                        <p>商品详细信息hahahahhahhahahahahah</p>
+                        <img :src="item.img_url">
+                        <p>{{item.detail}}</p>
                     </div>
                     <div class="spec">
-                        <p>尺寸</p>
-                        <p>颜色</p>
+                        <p>尺寸:{{item.spec}}</p>
                     </div>
-                    <div class="price">¥19.00</div>
+                    <div class="price">¥{{parseFloat(item.price).toFixed(2)}}</div>
                     <div class="count">
-                        <button @click="goSub">-</button>
-                        <input type="number" v-model="num">
-                        <button @click="goAdd">+</button>
+                        <button @click="goSub(item.cid)">-</button>
+                        <input type="number" :value="item.count">
+                        <button @click="goAdd(item.cid)">+</button>
                     </div>
-                    <div class="total">¥19.00</div>
+                    <div class="total">¥{{(item.price*item.count).toFixed(2)}}</div>
                     <div class="do">
                         <a href="#">移入收藏夹</a>
-                        <a href="#">删除</a>
-                    </div>
-                </li>
-                <li class="goods">
-                    <div class="check"><input type="checkbox"></div>
-                    <div class="info">
-                        <img src="http://127.0.0.1:3000/img/products/sm/1.1.1-sm.jpg" alt="">
-                        <p>商品详细信息hahahahhahhahahahahah</p>
-                    </div>
-                    <div class="spec">
-                        <p>尺寸</p>
-                        <p>颜色</p>
-                    </div>
-                    <div class="price">¥19.00</div>
-                    <div class="count">
-                        <button @click="goSub">-</button>
-                        <input type="number" v-model="num">
-                        <button @click="goAdd">+</button>
-                    </div>
-                    <div class="total">¥19.00</div>
-                    <div class="do">
-                        <a href="#">移入收藏夹</a>
-                        <a href="#">删除</a>
-                    </div>
-                </li>
-                <li class="goods">
-                    <div class="check"><input type="checkbox"></div>
-                    <div class="info">
-                        <img src="http://127.0.0.1:3000/img/products/sm/1.1.1-sm.jpg" alt="">
-                        <p>商品详细信息hahahahhahhahahahahah</p>
-                    </div>
-                    <div class="spec">
-                        <p>尺寸</p>
-                        <p>颜色</p>
-                    </div>
-                    <div class="price">¥19.00</div>
-                    <div class="count">
-                        <button @click="goSub">-</button>
-                        <input type="number" v-model="num">
-                        <button @click="goAdd">+</button>
-                    </div>
-                    <div class="total">¥19.00</div>
-                    <div class="do">
-                        <a href="#">移入收藏夹</a>
-                        <a href="#">删除</a>
+                        <a href="#" @click="delData(item.cid)">删除</a>
                     </div>
                 </li>
             </ul>
@@ -83,15 +38,16 @@
                 <div>
                     <div class="operation">
                         <div class="checkall">
-                            <input type="checkbox">全选
+                            <input type="checkbox"><a>全选</a>
                         </div>
-                        <div class="delete"><a href="#">删除</a></div>
+                        <div class="delete"><a>删除</a></div>
                         <div class="collection"><a href="#">移入收藏夹</a></div>
                         <div class="share"><a href="#">分享</a></div>
                     </div>
                     <div class="clear">
-                        <p>已选商品0件</p>
-                        <p>合计(不含运费):</p><h5>¥19</h5>
+                        <h5>已选商品0件</h5>
+                        <h5>合计(不含运费):</h5>
+                        <h3>¥{{getsubtotal}}</h3>
                     </div>
                 </div>
                 <button>结算</button>
@@ -108,49 +64,53 @@
     export default{
         data(){
             return{
-                lid:this.$route.params.lid,
-                num:1
+                list:[],
             }
         },
         methods:{
-            // addCart(){
-            //     //修改vuex中共享数据,参数方法名称
-            //     this.$store.commit("increment",this.num);
-            // },
-            goSub(){
-                if(this.num<=1){
-                    return;
+            goSub(cid){
+                for(var item of this.list){
+                    if(item.cid==cid){
+                        if(item.count<=1){return}
+                            item.count--;
+                    }
                 }
-                    this.num--;
             },
-            goAdd(){
-                if(this.num>=99){return;}
-                this.num++;
+            goAdd(cid){
+                for(var item of this.list){
+                    if(item.cid==cid){
+                        if(item.count>=99){return}
+                            item.count++;
+                    }
+                }
             },
-            // 获取当前商品数据
-            getDetails(){
-                // 发送请求获取数据
-                this.$http.get("product/details?lid="+this.lid).then(result=>{
-                    // 保存在info数据对象中
-                    // console.log(result);
-                    this.details=result.body[0];
-                    var specs=result.body[0].spec.split(",");
-                    this.spec=specs;
-                    // console.log(this.details);
-                    // console.log(this.spec);
+            delData(cid){
+                for(var item of this.list){
+                    if(item.cid==cid){
+                        this.$http.get("cart/sub?cid="+cid).then(result=>{
+                            Toast("删除成功");
+                            this.getCartList();
+                        })
+                    }
+                }
+            },
+            getCartList(){
+                this.$http.get("cart/list").then(result=>{
+                    this.list=result.body;
                 })
             },
-            getImageList(){
-                var url="product/goodspic?lid="+this.lid;
-                this.$http.get(url).then(result=>{
-                    this.imagelist=result.body;
-                    console.log(this.imagelist)
-                })
-            }
         },
         created(){
-            this.getImageList();
-            this.getDetails();
+            this.getCartList();
+        },
+        computed:{
+            getsubtotal:function(){
+                var sum=0;
+                for(var item of this.list){
+                    sum+=item.price*item.count;
+                }
+                return sum.toFixed(2);
+            }
         },
         components:{
             'header-box':header,  //注册子组件
@@ -178,6 +138,10 @@ li{
     display: flex;
     padding:10px;
 }
+.cart_container .title>div{
+    font-size:16px;
+    color:rgb(95, 92, 92);
+}
 .cart_container .goods{
     margin-top:10px;
     border:1px solid #ddd;
@@ -187,7 +151,7 @@ li{
     width:7%;
 }
 .cart_container .info{
-    width:35%;
+    width:33%;
     display: flex;
 }
 .cart_container .info>img{
@@ -196,11 +160,12 @@ li{
 }
 .cart_container .info>p{
     padding:0 10px;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: bold;
     color:#000;
 }
 .cart_container .spec{
-    width:13%
+    width:15%
 }
 .cart_container .count{
     width:13%;
@@ -232,7 +197,8 @@ li{
 }
 .cart_container .bottom{
     display: flex;
-    margin-top:30px;
+    margin-top:50px;
+    margin-bottom:65px;
 }
 .cart_container .bottom>div{
     width:90%;
@@ -243,9 +209,12 @@ li{
 .cart_container .bottom>button{
     width:10%;
     background: red;
-    font-size:18px;
+    font-size:20px;
     border-radius:0;
     border:0;
+}
+.cart_container .bottom a{
+    line-height: 34px;
 }
 .cart_container .operation,.cart_container .clear{
     width:50%;
@@ -254,9 +223,19 @@ li{
 .cart_container .clear{
     justify-content: flex-end;
 }
-.cart_container .operation>div,.cart_container .clear>p,.cart_container .clear>h5{
+.cart_container .operation>div,.cart_container .clear>h5,.cart_container .clear>h3{
     padding-right: 20px;
 }
-
+.cart_container .clear>h5{
+    margin:0;
+    font-size:16px;
+    color:#000;
+    line-height: 34px;
+}
+.cart_container .clear>h3{
+    margin:0;
+    color:#F47E7A;
+    line-height: 34px;
+}
 </style>
 

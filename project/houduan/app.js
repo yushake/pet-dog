@@ -5,6 +5,7 @@ const bodyParser=require("body-parser");
 // 1.1加载模块文件
 const index=require("./routes/index");
 const product=require("./routes/product");
+const cart=require("./routes/cart");
 
 var app=express();
 
@@ -25,6 +26,7 @@ app.use(express.static("public"));
 // 5.将图片轮播模块加载当前应用中指定访问路径
 app.use("/index",index);
 app.use("/product",product);
+app.use("/cart",cart);
 
 
 

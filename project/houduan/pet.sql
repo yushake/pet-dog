@@ -33,10 +33,12 @@ CREATE TABLE receiver_address(
 /*购物车*/
 CREATE TABLE pet_car_item(
   cid INT PRIMARY KEY AUTO_INCREMENT,
-  user_id INT,
   product_id INT,    #商品编号
+  detail VARCHAR(64),
+  spec VARCHAR(32),
   count INT,         #购买数量
-  is_checked BOOLEAN #是否勾选，确定购买
+  price VARCHAR(8),
+  img_url VARCHAR(64)
 );
 
 /*用户订单*/
