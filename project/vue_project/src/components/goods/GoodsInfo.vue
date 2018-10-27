@@ -138,7 +138,7 @@
     margin:40px auto;
     /* margin-top:20px; */
     padding:20px 40px;
-    width:70%;
+    width:75%;
     border:1px solid #ddd;
     box-shadow: 0 0 3px #ddd;
     display: flex;

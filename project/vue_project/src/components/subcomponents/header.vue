@@ -11,9 +11,9 @@
           </div>
         </div>
         <div class="do">
-          <router-link to="#"><img src="../../img/order.png">&nbsp;|&nbsp;</router-link>
-          <a href="#"><img src="../../img/care.png">&nbsp;|&nbsp;</a>
-          <a href="#"><img src="../../img/shop_car.png" alt="">&nbsp;|&nbsp;</a>
+          <router-link to="/cart"><img src="../../img/order.png">&nbsp;|&nbsp;</router-link>
+          <router-link to="/cart"><img src="../../img/care.png">&nbsp;|&nbsp;</router-link>
+          <router-link to="/cart"><img src="../../img/shop_car.png" alt="">&nbsp;|&nbsp;</router-link>
           <router-link to="/register">注册&nbsp;|&nbsp;</router-link>
           <router-link to="/login">登录</router-link>
         </div>
