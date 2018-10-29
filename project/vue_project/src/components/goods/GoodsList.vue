@@ -65,8 +65,8 @@
                     </div>
                 </div>
                 <ul class="page">
-                    <li class="prev" @click="getPrev"><a>上一页</a></li>
-                    <li class="pno" v-for="item in pnolist" :key="item.pno"><a href="#">{{item}}</a></li>
+                    <li class="prev active" @click="getPrev"><a>上一页</a></li>
+                    <li class="pno" :class="{'active':index==active}" v-for="(item,index) in pnolist" :key="item.index" @click="isActive(index)"><a>{{item}}</a></li>
                     <li class="next" @click="getNext"><a>下一页</a></li>
                 </ul>
             </div>
@@ -86,7 +86,9 @@
                 productlist:[],
                 count:0,
                 pageIndex:1,
-                pnolist:[]
+                pnolist:[],
+                pageitems:[],
+                active:0
             }
         },
         methods:{
@@ -103,6 +105,7 @@
                     for(var i=1;i<=pageCount;i++){
                         this.pnolist.push(i);
                     }
+                    
                 });
             },
             getItemsProduct(){
@@ -147,9 +150,12 @@
                     var url="product/list?pno="+this.pageIndex;
                     this.$http.get(url).then(result=>{
                         this.productlist=result.body.msg.data;
-                        console.log(result.body.msg.pno);
+                        // console.log(result.body.msg.pno);
                     })
                 }
+            },
+            isActive:function(index){
+                this.active = index;
             }
         },
         created(){
@@ -275,9 +281,17 @@ ul{
     padding:3px 8px;
     border: 1px solid #ccc;
 }
+.app_goodslist .goodslist_body .goodslist_goods .page li.active{
+    border:1px solid rgb(14, 212, 212);
+    
+}
+.app_goodslist .goodslist_body .goodslist_goods .page li.active a{
+    color:rgb(14, 212, 212);
+}
 .app_goodslist .goodslist_body .goodslist_goods .page li a{
     font-size:16px;
     color:#aaa;
+    cursor: pointer;
 }
 
 </style>

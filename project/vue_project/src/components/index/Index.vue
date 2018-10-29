@@ -288,7 +288,7 @@
 .app .content .content_head .content_left img{
     padding-right:100px;
     width:100%;
-    height:550px;
+    height:100%;
 }
 .app .content .content_head .content_right h3{
     color:#F47E7A;

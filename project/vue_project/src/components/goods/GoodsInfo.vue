@@ -82,10 +82,6 @@
             }
         },
         methods:{
-            // addCart(){
-            //     //修改vuex中共享数据,参数方法名称
-            //     this.$store.commit("increment",this.num);
-            // },
             goSub(){
                 if(this.num<=1){
                     return;
