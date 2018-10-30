@@ -6,6 +6,7 @@ const bodyParser=require("body-parser");
 const index=require("./routes/index");
 const product=require("./routes/product");
 const cart=require("./routes/cart");
+const user=require("./routes/user");
 
 var app=express();
 
@@ -27,6 +28,7 @@ app.use(express.static("public"));
 app.use("/index",index);
 app.use("/product",product);
 app.use("/cart",cart);
+app.use("/user",user);
 
 
 

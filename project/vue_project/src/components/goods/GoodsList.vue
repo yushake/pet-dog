@@ -82,7 +82,7 @@
     export default{
         data(){
             return{
-                iid:this.$route.params.iid,
+                // iid:this.$route.params.iid,
                 productlist:[],
                 count:0,
                 pageIndex:1,

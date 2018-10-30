@@ -41,7 +41,7 @@
         <ul>
           <li><router-link to="/index">首页</router-link></li>
           <li><router-link to="/goodslist">所有商品</router-link></li>
-          <li v-for="item in navlist" :key="item.iid" @click="getItemProduct(item.iid)"><a>{{item.fname}}</a></li>
+          <li v-for="item in navlist" :key="item.iid"><a>{{item.fname}}</a></li>
         </ul>
       </div>
   </div>
@@ -54,9 +54,9 @@
           }
       },
       methods:{
-          getItemProduct(iid){
-            this.$router.push({path:"/goodslist/"+iid});
-          },
+          // getItemProduct(iid){
+          //   this.$router.push({path:"/goodslist/"+iid});
+          // },
           getNavList(){
                 this.$http.get("product/navlist").then(result=>{
                     console.log(result);

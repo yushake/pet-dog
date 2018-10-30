@@ -7,12 +7,12 @@
         </div>
         <div class="row_body">
             <h4>用户昵称:</h4>
-            <p><input type="text"></p>
+            <p><input type="text" name="uname" v-model="uname"></p>
             <h5>用户名长度为3-9位</h5>
         </div>
         <div class="row_body">
             <h4>登录密码：</h4>
-            <p><input type="password" name="upwd" id="upwd" class="input-group"/></p>
+            <p><input type="password" name="upwd" v-model="upwd" class="input-group"/></p>
             <h5>密码长度为6-12位</h5>
         </div>
         <div class="row_footer">
@@ -21,7 +21,7 @@
                 <span>自动登录</span>
             </div>
             <div>
-                <button>登录</button>
+                <button @click="toSubmit">登录</button>
                 <button>重置</button>
             </div>
             <span class="2">
@@ -33,14 +33,30 @@
       
 </template>
 <script>
+  import {Toast} from "mint-ui";
   export default {
       data(){
           return{
-              
+              uname:"",
+              upwd:""
           }
       },
       methods:{
-          
+        toSubmit(){
+            var obj={
+                uname:this.uname,
+                upwd:this.upwd
+            }
+            this.$http.post("user/login",obj).then(result=>{
+                console.log(result);
+                Toast(result.body.msg)
+                if(result.body.code!=1){
+                    return;
+                }else{
+                    this.$router.push({path:'/index'});
+                }
+            });
+        }
       },
       created(){
          
@@ -50,7 +66,7 @@
 <style>
 .app_login{
     width:100%;
-    height:600px;
+    height:800px;
     background:url(../../img/register.png) no-repeat center center;
     background-size: cover;
     position: relative;
@@ -58,11 +74,11 @@
 .app_login .content{
     width:600px;
     height:450px;
-    background:rgb(210,210,210);
+    background:rgba(0,0,0,.2);
     padding:50px;
     position: absolute;
-    top:13%;
-    right:50px;
+    top:21%;
+    right:8%;
     color:white ;
 }
 .app_login .content a,.app_login .content h5,.app_login .content button{

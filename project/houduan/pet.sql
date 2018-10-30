@@ -250,7 +250,8 @@ INSERT INTO pet_user VALUES
 (NULL,'奥利奥','123456','maodou@qq.com','13912345678',NULL,'0'),
 (NULL,'嘟嘟','123456','maodou@qq.com','13912345678',NULL,'1'),
 (NULL,'八月','123456','maodou@qq.com','13912345678',NULL,'0'),
-(NULL,'宝宝','123456','maodou@qq.com','13912345678',NULL,'1');
+(NULL,'宝宝','123456','maodou@qq.com','13912345678',NULL,'1'),
+(NULL,'baby','123456','maodou@qq.com','13912345678',NULL,'1');
 
 /*商品分类*/
 INSERT INTO product_item VALUES
