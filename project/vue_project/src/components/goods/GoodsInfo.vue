@@ -4,10 +4,9 @@
         <header-box></header-box>
         <div class="container">
             <div class="left">
-                <img src="http://127.0.0.1:3000/img/products/md/1.1.1-md.jpg">
+                <img :src="md">
                 <ul>
-                    <li v-for="item in imagelist" :key="item.cid"><img :src="item.sm" data-md="item.md" data-lg="item.lg"></li>
-                    
+                    <li v-for="item in imagelist" :key="item.cid"><img :src="item.sm" data-md="item.md" data-lg="item.lg" @click="showMd(item.md)"></li>
                 </ul>
             </div>
             <div class="right">
@@ -74,6 +73,7 @@
         data(){
             return{
                 lid:this.$route.params.lid,
+                md:"",
                 details:{},
                 spec:[],
                 imagelist:[],
@@ -106,8 +106,12 @@
                 var url="product/goodspic?lid="+this.lid;
                 this.$http.get(url).then(result=>{
                     this.imagelist=result.body;
+                    this.md=result.body[0].md
                     console.log(this.imagelist)
                 })
+            },
+            showMd(md){
+                this.md=md
             },
             check_show: function(index) {
                 this.active = index;
@@ -138,7 +142,6 @@
         created(){
             this.getImageList();
             this.getDetails();
-            this.getImageList();
         },
         components:{
             'header-box':header,  //注册子组件

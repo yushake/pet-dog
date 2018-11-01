@@ -48,7 +48,7 @@
                 upwd:this.upwd
             }
             this.$http.post("user/login",obj).then(result=>{
-                console.log(result);
+                // console.log(result);
                 Toast(result.body.msg)
                 if(result.body.code!=1){
                     return;
@@ -67,6 +67,7 @@
 .app_login{
     width:100%;
     height:800px;
+    margin:50px auto;
     background:url(../../img/register.png) no-repeat center center;
     background-size: cover;
     position: relative;

@@ -1,7 +1,7 @@
 <template>
     <div class="app_goodslist">
         <aside-box></aside-box>
-        <header-box></header-box>
+        <header-box @getInfo="getgoodslist"></header-box>
         <div class="goodslist_body">
             <div class="goodslist_nav">
                 <ul class="tree">
@@ -88,16 +88,16 @@
                 pageIndex:1,
                 pnolist:[],
                 pageitems:[],
-                active:0
+                active:0,
+                item_id:0
             }
         },
         methods:{
-            getDetails(lid){
-                this.$router.push({path:"/goodsinfo/"+lid});
-
-            },
-            getProductList(){
-                this.$http.get("product/list").then(result=>{
+            getgoodslist(iid){
+                this.item_id=iid
+                var item_id=this.item_id;
+                // console.log(this.item_id)
+                this.$http.get("product/list?item_id="+item_id).then(result=>{
                     // console.log(result);
                     this.productlist=result.body.msg.data;
                     this.count=result.body.msg.count;
@@ -108,12 +108,29 @@
                     
                 });
             },
+            getDetails(lid){
+                this.$router.push({path:"/goodsinfo/"+lid});
+
+            },
+            // getProductList(){
+            //     this.$http.get("product/list").then(result=>{
+            //         // console.log(result);
+            //         this.productlist=result.body.msg.data;
+            //         this.count=result.body.msg.count;
+            //         var pageCount=result.body.msg.pageCount
+            //         for(var i=1;i<=pageCount;i++){
+            //             this.pnolist.push(i);
+            //         }
+                    
+            //     });
+            // },
             getItemsProduct(){
                 this.$http.get("product/itemproductlist?iid="+this.iid).then(result=>{
                     // console.log(result);
                     this.productlist=result.body.msg.data;
                     this.count=result.body.msg.count;
                     var pageCount=result.body.msg.pageCount
+                    console.log(result)
                     for(var i=1;i<=pageCount;i++){
                         this.pnolist.push(i);
                     }
@@ -159,13 +176,15 @@
             }
         },
         created(){
-            this.getProductList();
+            // this.getProductList();
+            this.getgoodslist(this.item_id);
             this.getItemsProduct();
-            this.getNext();
-            this.getPrev();
+            this.getNavDetails()
         },
         mounted(){
-            this.getNavDetails()
+            this.getNext();
+            this.getPrev();
+            
         },
         components:{
             'header-box':header,  //注册子组件

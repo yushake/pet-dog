@@ -4,10 +4,19 @@ const pool=require("../pool");
 
 router.post("/login",(req,res)=>{
   var {uname,upwd}=req.body;
+  if(!uname){
+    res.send({code:-2,msg:"用户名不能为空!"})
+    return;
+  }
+  if(!upwd){
+    res.send({code:-3,msg:"用户密码不能为空"})
+    return;
+  }
+
   var sql="SELECT `uid`, `uname`, `upwd`, `email`, `phone`, `avatar`, `gender` FROM `pet_user` WHERE uname=? AND upwd=?";
   pool.query(sql,[uname,upwd],(err,result)=>{
     if(err) throw err;
-    console.log(result);
+    // console.log(result);
     if(result.length>0){
       res.send({code:1,msg:"登录成功"})
     }else{
@@ -41,7 +50,6 @@ router.post("/register",(req,res)=>{
       pool.query(sql,[uname,upwd,phone],(err,result)=>{
         if(err) throw err;
         res.send({code:2,msg:"注册成功"});
-    
       })
     }
     

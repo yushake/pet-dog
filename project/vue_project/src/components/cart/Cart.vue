@@ -45,9 +45,9 @@
                         <div class="share"><a href="#">分享</a></div>
                     </div>
                     <div class="clear">
-                        <h5>已选商品0件</h5>
+                        <h5>已选商品<span>{{getsubtotal.totalcount}}</span>件</h5>
                         <h5>合计(不含运费):</h5>
-                        <h3>¥{{getsubtotal}}</h3>
+                        <h3>¥{{getsubtotal.sum}}</h3>
                     </div>
                 </div>
                 <button>结算</button>
@@ -104,13 +104,32 @@
             this.getCartList();
         },
         computed:{
+            // getsubtotal:function(){
+            //     var sum=0;
+            //     for(var item of this.list){
+            //         sum+=item.price*item.count;
+            //     }
+            //     return sum.toFixed(2);
+            // },
+            // getcounttotal:function(){
+            //     var sum=0;
+            //     for(var item of this.list){
+            //         sum+=item.count;
+            //     }
+            //     return sum;
+            // }
             getsubtotal:function(){
                 var sum=0;
+                var totalcount=0;
+                var obj={};
                 for(var item of this.list){
                     sum+=item.price*item.count;
+                    totalcount+=item.count;
                 }
-                return sum.toFixed(2);
-            }
+                obj.sum=sum.toFixed(2);
+                obj.totalcount=parseInt(totalcount);
+                return obj;
+            },
         },
         components:{
             'header-box':header,  //注册子组件
@@ -144,6 +163,7 @@ li{
 }
 .cart_container .goods{
     margin-top:10px;
+    align-items: center;
     border:1px solid #ddd;
     box-shadow: 0 0 3px #ddd;
 }
@@ -153,13 +173,15 @@ li{
 .cart_container .info{
     width:33%;
     display: flex;
+    /* align-items: center */
 }
 .cart_container .info>img{
     width:70px;
     height:70px;
 }
 .cart_container .info>p{
-    padding:0 10px;
+    padding:15px 10px;
+    margin:0px;
     font-size: 14px;
     font-weight: bold;
     color:#000;
@@ -170,6 +192,9 @@ li{
 .cart_container .count{
     width:13%;
     display: flex;
+}
+.cart_container .goods .count{
+    padding-top:13px;
 }
 .cart_container .price,.count,.cart_container .total{
     width:10%;
@@ -222,6 +247,11 @@ li{
 }
 .cart_container .clear{
     justify-content: flex-end;
+}
+.cart_container .clear>h5>span{
+    padding:0 10px;
+    font-size:24px;
+    font-weight:bold;
 }
 .cart_container .operation>div,.cart_container .clear>h5,.cart_container .clear>h3{
     padding-right: 20px;
