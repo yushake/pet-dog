@@ -5,9 +5,9 @@
         <div class="goodslist_body">
             <div class="goodslist_nav">
                 <ul class="tree">
-                    <li><router-link to="/goodslist">查看所有宝贝</router-link></li>
+                    <li><a @click="getgoodslist(0)">查看所有宝贝</a></li>
                     <li>
-                        <span class="open" @click="getNavDetails($event)" ref="span1">宠物服饰及配件</span>
+                        <span class="open">宠物服饰及配件</span>
                         <ul>
                             <li>宠物服装/雨衣</li>
                             <li>鞋子</li>
@@ -26,7 +26,7 @@
                             <li>漏食球</li>
                         </ul>
                     </li>
-                    <li><span @click="getNavDetails">清洁用品</span>
+                    <li><span>清洁用品</span>
                         <ul>
                             <li>除味剂</li>
                             <li>香波浴液</li>
@@ -65,9 +65,9 @@
                     </div>
                 </div>
                 <ul class="page">
-                    <li class="prev active" @click="getPrev"><a>上一页</a></li>
+                    <li class="prev active" @click="getPrev()"><a>上一页</a></li>
                     <li class="pno" :class="{'active':index==active}" v-for="(item,index) in pnolist" :key="item.index" @click="isActive(index)"><a>{{item}}</a></li>
-                    <li class="next" @click="getNext"><a>下一页</a></li>
+                    <li class="next" @click="getNext()"><a>下一页</a></li>
                 </ul>
             </div>
         </div>
@@ -82,72 +82,47 @@
     export default{
         data(){
             return{
-                // iid:this.$route.params.iid,
+                // item_id:this.$route.params.iid,
                 productlist:[],
                 count:0,
+                pageCount:0,
                 pageIndex:1,
                 pnolist:[],
-                pageitems:[],
                 active:0,
-                item_id:0
+                // item_id:0
             }
         },
         methods:{
-            getgoodslist(iid){
-                this.item_id=iid
-                var item_id=this.item_id;
-                // console.log(this.item_id)
-                this.$http.get("product/list?item_id="+item_id).then(result=>{
-                    // console.log(result);
-                    this.productlist=result.body.msg.data;
-                    this.count=result.body.msg.count;
-                    var pageCount=result.body.msg.pageCount
-                    for(var i=1;i<=pageCount;i++){
-                        this.pnolist.push(i);
-                    }
-                    
-                });
-            },
             getDetails(lid){
                 this.$router.push({path:"/goodsinfo/"+lid});
 
             },
-            // getProductList(){
-            //     this.$http.get("product/list").then(result=>{
-            //         // console.log(result);
-            //         this.productlist=result.body.msg.data;
-            //         this.count=result.body.msg.count;
-            //         var pageCount=result.body.msg.pageCount
-            //         for(var i=1;i<=pageCount;i++){
-            //             this.pnolist.push(i);
-            //         }
-                    
-            //     });
-            // },
-            getItemsProduct(){
-                this.$http.get("product/itemproductlist?iid="+this.iid).then(result=>{
-                    // console.log(result);
+            getgoodslist(iid){
+                this.pnolist=[];
+                this.$http.get("product/list?item_id="+iid).then(result=>{
                     this.productlist=result.body.msg.data;
                     this.count=result.body.msg.count;
-                    var pageCount=result.body.msg.pageCount
-                    console.log(result)
-                    for(var i=1;i<=pageCount;i++){
-                        this.pnolist.push(i);
-                    }
+                    this.pageCount=result.body.msg.pageCount
                 });
-            },
-            getNavDetails(event){
-                var span=this.$refs.span1;
-                if(span.className=="open"){
-                    span.className="";
-                }else{
-                    span.className="open";
+                for(var i=1;i<=this.pageCount;i++){
+                    this.pnolist.push(i);
                 }
             },
+            // getAllGoods(){
+            //     this.$http.get("product/alllist").then(result=>{
+            //         this.productlist=result.body.msg.data;
+            //         this.count=result.body.msg.count;
+            //         this.pageCount=result.body.msg.pageCount
+            //     });
+            //     for(var i=1;i<=this.pageCount;i++){
+            //         this.pnolist.push(i);
+            //     }
+            // },
             getNext(){
                 this.pageIndex++;
                 var url="product/list?pno="+this.pageIndex;
                 this.$http.get(url).then(result=>{
+                    console.log(result)
                     if(this.pageIndex<=result.body.msg.pageCount){
                         this.productlist=result.body.msg.data;
                     }else{
@@ -155,11 +130,6 @@
                         return;
                     }
                 });
-                // if(pno==0){
-                //     $page.children(":first").addClass("disabled")
-                // if(pno==pageCount-1)
-                //     $page.children(":last").addClass("disabled")
-                // }
             },
             getPrev(){
                 if(this.pageIndex>1){
@@ -176,15 +146,12 @@
             }
         },
         created(){
-            // this.getProductList();
-            this.getgoodslist(this.item_id);
-            this.getItemsProduct();
-            this.getNavDetails()
+            this.getgoodslist();
+            // this.getAllGoods()
         },
         mounted(){
             this.getNext();
             this.getPrev();
-            
         },
         components:{
             'header-box':header,  //注册子组件
@@ -192,9 +159,6 @@
             'aside-box':aside,
         }
     }
-    // 点击当前商品跳转,商品详细信息组件
-    // 标签式
-    // 
 
 </script>
 <style>

@@ -72,7 +72,7 @@
     export default{
         data(){
             return{
-                lid:this.$route.params.lid,
+                lid:this.$route.params.lid,  //接收参数
                 md:"",
                 details:{},
                 spec:[],
@@ -94,9 +94,7 @@
             },
             // 获取当前商品数据
             getDetails(){
-                // 发送请求获取数据
                 this.$http.get("product/details?lid="+this.lid).then(result=>{
-                    // 保存在info数据对象中
                     this.details=result.body[0];
                     var specs=result.body[0].spec.split(",");
                     this.spec=specs;
@@ -158,7 +156,6 @@
 }
 .container{
     margin:40px auto;
-    /* margin-top:20px; */
     padding:20px 40px;
     width:75%;
     border:1px solid #ddd;

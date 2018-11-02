@@ -40,7 +40,7 @@
         </div>
         <ul>
           <li><router-link to="/index">首页</router-link></li>
-          <li><router-link to="/goodslist">所有商品</router-link></li>
+          <li @click="pushiid(0)"><a>所有商品</a></li>
           <li v-for="item in navlist" :key="item.iid" @click="pushiid(item.iid)"><a>{{item.fname}}</a></li>
         </ul>
       </div>
@@ -51,21 +51,19 @@
       data(){
           return{
               navlist:[],
-              // iid:0
           }
       },
       methods:{
+          // pushall(){
+          //   this.$router.push({path:"/allgoods"});
+          // },
           pushiid(iid){
-            // this.iid=iid
             this.$emit("getInfo",iid)
             this.$router.push({path:"/goodslist/"+iid});
           },
-          // getItemProduct(iid){
-          //   this.$router.push({path:"/goodslist/"+iid});
-          // },
           getNavList(){
                 this.$http.get("product/navlist").then(result=>{
-                    console.log(result);
+                    // console.log(result);
                     this.navlist=result.body;
                 });
             },

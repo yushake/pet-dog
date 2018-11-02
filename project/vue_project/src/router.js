@@ -19,7 +19,7 @@ export default new Router({
     {path:"/index",component:Index},
     {path:"/login",component:Login},
     {path:"/register",component:Register},
-    // {path:"/goodslist",component:GoodsList},
+    // {path:"/allgoods",component:GoodsList},
     {path:"/goodslist/:iid",component:GoodsList,name:"goodslist"},
     {path:"/goodsinfo/:lid",component:GoodsInfo,name:"goodsinfo"},
     {path:"/cart",component:Cart}
