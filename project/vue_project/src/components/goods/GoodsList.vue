@@ -108,16 +108,7 @@
                     this.pnolist.push(i);
                 }
             },
-            // getAllGoods(){
-            //     this.$http.get("product/alllist").then(result=>{
-            //         this.productlist=result.body.msg.data;
-            //         this.count=result.body.msg.count;
-            //         this.pageCount=result.body.msg.pageCount
-            //     });
-            //     for(var i=1;i<=this.pageCount;i++){
-            //         this.pnolist.push(i);
-            //     }
-            // },
+            
             getNext(){
                 this.pageIndex++;
                 var url="product/list?pno="+this.pageIndex;

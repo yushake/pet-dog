@@ -49,12 +49,24 @@ router.post("/register",(req,res)=>{
       var sql="INSERT INTO `pet_user`(`uid`, `uname`, `upwd`, `email`, `phone`, `avatar`, `gender`) VALUES (NULL,?,?,NULL,?,NULL,NULL)";
       pool.query(sql,[uname,upwd,phone],(err,result)=>{
         if(err) throw err;
+        console.log(result);
         res.send({code:2,msg:"注册成功"});
       })
     }
-    
   })
-  
+})
+router.get("/test",(req,res)=>{
+  var uname=req.query.uname;
+  var sql="SELECT `uid`, `uname`, `upwd`, `email`, `phone`, `avatar`, `gender` FROM `pet_user` WHERE uname=?";
+  pool.query(sql,[uname],(err,result)=>{
+    if(err) throw err;
+    if(result.length>0){
+      res.send({code:-1,msg:"该用户名已被占用!"});
+      return;
+    }else{
+      res.send({code:1,msg:"用户名可用"})
+    }
+  }) 
 })
 
 
