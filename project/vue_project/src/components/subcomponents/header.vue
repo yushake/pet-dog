@@ -121,6 +121,7 @@
 .app_header .top .do a img{
   width:18px;
   height:18px;
+  vertical-align:middle;
 }
 .app_header .navbar{
   background: rgba(0,0,0,.1);

@@ -65,9 +65,9 @@
                     </div>
                 </div>
                 <ul class="page">
-                    <li class="prev active" @click="getPrev()"><a>上一页</a></li>
-                    <li class="pno" :class="{'active':index==active}" v-for="(item,index) in pnolist" :key="item.index" @click="isActive(index)"><a>{{item}}</a></li>
-                    <li class="next" @click="getNext()"><a>下一页</a></li>
+                    <li class="prev active" @click="getOther(false)"><a>上一页</a></li>
+                    <li class="pno" v-for="i in pageCount" :key="i" :class="{'active':i==active}"  @click="isActive(i)"><a>{{i}}</a></li>
+                    <li class="next" @click="getOther(true)"><a>下一页</a></li>
                 </ul>
             </div>
         </div>
@@ -82,68 +82,67 @@
     export default{
         data(){
             return{
-                // item_id:this.$route.params.iid,
+                iid:this.$route.params.iid,
                 productlist:[],
                 count:0,
                 pageCount:0,
-                pageIndex:1,
+                pageIndex:0,
                 pnolist:[],
                 active:0,
-                // item_id:0
             }
         },
         methods:{
             getDetails(lid){
                 this.$router.push({path:"/goodsinfo/"+lid});
-
             },
             getgoodslist(iid){
+                this.iid=iid;
                 this.pnolist=[];
                 this.$http.get("product/list?item_id="+iid).then(result=>{
+                    console.log(result)
                     this.productlist=result.body.msg.data;
                     this.count=result.body.msg.count;
-                    this.pageCount=result.body.msg.pageCount
+                    this.pageCount=result.body.msg.pageCount;
+                    this.pageIndex=result.body.msg.pno
                 });
-                for(var i=1;i<=this.pageCount;i++){
-                    this.pnolist.push(i);
-                }
             },
             
-            getNext(){
-                this.pageIndex++;
-                var url="product/list?pno="+this.pageIndex;
+            getOther(isNext){
+                if(isNext){
+                    if(this.pageIndex<this.pageCount){
+                        this.pageIndex++;
+                    }else{
+                        Toast('没有更多啦')
+                        return;
+                    }
+                }else{
+                    if(this.pageIndex>1){
+                        this.pageIndex--
+                    }else{
+                        Toast('已经是第一页啦')
+                        return;
+                    }
+                }
+                var url="product/list?item_id="+this.iid+"&pno="+this.pageIndex;
                 this.$http.get(url).then(result=>{
                     console.log(result)
                     if(this.pageIndex<=result.body.msg.pageCount){
                         this.productlist=result.body.msg.data;
+                        console.log(result.body.msg.pno);
                     }else{
                         Toast("没有更多了");
                         return;
                     }
                 });
             },
-            getPrev(){
-                if(this.pageIndex>1){
-                    this.pageIndex--;
-                    var url="product/list?pno="+this.pageIndex;
-                    this.$http.get(url).then(result=>{
-                        this.productlist=result.body.msg.data;
-                        // console.log(result.body.msg.pno);
-                    })
-                }
-            },
             isActive:function(index){
                 this.active = index;
             }
         },
         created(){
-            this.getgoodslist();
-            // this.getAllGoods()
+            this.getgoodslist(this.iid)
         },
-        mounted(){
-            this.getNext();
-            this.getPrev();
-        },
+        
         components:{
             'header-box':header,  //注册子组件
             'footer-box':footer,

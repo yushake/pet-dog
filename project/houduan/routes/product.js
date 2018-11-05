@@ -93,6 +93,9 @@ router.get("/details",(req,res)=>{
 
 router.get("/goodspic",(req,res)=>{
     var product_id=req.query.lid;
+    if(product_id>7){
+        product_id=1
+    }
     var sql="SELECT `cid`, `product_id`, `sm`, `md`, `lg` FROM `product_pic` WHERE product_id=?";
     pool.query(sql,[product_id],(err,result)=>{
         if(err) throw err;

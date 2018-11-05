@@ -14,6 +14,7 @@ Vue.use(Router)
 
 // 指定该组件的访问路径
 export default new Router({
+  mode: 'history',
   routes: [
     {path:'/',redirect:"/index"},
     {path:"/index",component:Index},

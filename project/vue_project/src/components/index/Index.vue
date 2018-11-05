@@ -19,17 +19,17 @@
                 <div>
                     <img src="../../img/1.gif" >
                     <h3>遛狗绳skr</h3>
-                    <p><a>点击查看></a></p>
+                    <p @click="getgoodslist(4)"><a>点击查看></a></p>
                 </div>
                 <div>
                     <img src="../../img/2.gif" >
                     <h3>时尚窝垫来袭</h3>
-                    <p><a>点击查看></a></p>
+                    <p @click="getgoodslist(5)"><a>点击查看></a></p>
                 </div>
                 <div>
                     <img src="../../img/3.gif" >
                     <h3>8月爆卖狗子衣</h3>
-                    <p><a>点击查看></a></p>
+                    <p  @click="getgoodslist(1)"><a>点击查看></a></p>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="btn"><mt-button type="danger">查看更多</mt-button></div>  
+                <div class="btn"><mt-button type="danger" @click="getgoodslist(1)">查看更多</mt-button></div>  
             </div>
         </div>
         <!-- 2F -->
@@ -83,7 +83,7 @@
                         
                     </div>
                 </div>
-                <div class="btn"><mt-button type="danger">查看更多</mt-button></div>
+                <div class="btn"><mt-button type="danger" @click="getgoodslist(2)">查看更多</mt-button></div>
             </div>
         </div>
         <!-- 3F -->
@@ -110,7 +110,7 @@
                         
                     </div>
                 </div>
-                <div class="btn"><mt-button type="danger">查看更多</mt-button></div>
+                <div class="btn"><mt-button type="danger" @click="getgoodslist(3)">查看更多</mt-button></div>
             </div>
         </div>
         <!-- 4F -->
@@ -137,7 +137,7 @@
                         
                     </div>
                 </div>
-                <div class="btn"><mt-button type="danger">查看更多</mt-button></div>
+                <div class="btn"><mt-button type="danger" @click="getgoodslist(4)">查看更多</mt-button></div>
             </div>
         </div>
         <!-- 5F -->
@@ -164,12 +164,12 @@
                         
                     </div>
                 </div>
-                <div class="btn"><mt-button type="danger">查看更多</mt-button></div>  
+                <div class="btn"><mt-button type="danger"  @click="getgoodslist(5)">查看更多</mt-button></div>  
             </div>
         </div>
         <!-- end -->
         <div class="end">
-            <img src="http://127.0.0.1:3000/img/more.jpg">
+            <img src="http://127.0.0.1:3000/img/more.jpg"  @click="getgoodslist(0)">
         </div>
         <!-- 底部 -->
         <footer-box></footer-box>
@@ -188,6 +188,9 @@
             }
         },
         methods:{
+            getgoodslist(iid){
+                this.$router.push({path:"/goodslist/"+iid});
+            },
             getDetails(lid){
                 this.$router.push({path:"/goodsinfo/"+lid});
             },
